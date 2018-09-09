@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<context:component-scan base-package="com.dmt" />
+	<context:annotation-config />
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+		<bean
+			class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			
+			<property name="supportedMediaTypes">
+				<list>
+					<value>application/json</value>
+					<value>application/x-www-form-urlencoded</value>
+					<value>text/plain</value>
+				</list>
+			</property>
+		</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- Resources location and its mappings -->
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/fonts/**" location="/fonts/" />
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/jsp/" /> 
+		<property name="suffix" value=".jsp" />
+	</bean> 
+	<tx:annotation-driven />
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		p:location="file:D:\\DMTraders\\visa_database.properties" />
+		
+	<!-- <bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:com\htc\immigration\app\resource\locale\messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean> -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" p:driverClassName="${webservice.driverClassName}"
+		p:url="${webservice.databaseurl}" p:username="${webservice.username}"
+		p:password="${webservice.password}" />
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation">
+			<value>classpath:com\dmt\resource\hibernate.cfg.xml</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${webservice.dialect}</prop>
+				<prop key="hibernate.show_sql">${webservice.showSql}</prop>
+			</props>
+		</property>
+	</bean>
+ <!-- 	<bean id="passwordCrypts" class="com.htc.immigration.encryption.CryptoTools">
+    	<constructor-arg index="0" value="hSbaGj"/>
+	</bean> -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="objectMapper">
+		<bean
+			class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+			p:autoDetectFields="false" p:autoDetectGettersSetters="false"
+			 />
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    <property name="show_sql">true</property>
+    <mapping class="com.dmt.modal.Brand" />
+    <mapping class="com.dmt.modal.Product" />
+    <mapping class="com.dmt.modal.Taluk" />
+    <mapping class="com.dmt.modal.District" />
+    <mapping class="com.dmt.modal.Customer" />
+    <mapping class="com.dmt.modal.City" />
+    <mapping class="com.dmt.modal.Supplier" />
+    <mapping class="com.dmt.modal.Product" />
+    <mapping class="com.dmt.modal.Discount" />
+    <mapping class="com.dmt.modal.DmtSaleOrder" />
+    <mapping class="com.dmt.modal.SaleOrderAccount" />
+    <mapping class="com.dmt.modal.GRN" />
+    <mapping class="com.dmt.modal.GrnAccount" />
+    <mapping class="com.dmt.modal.DmtInvoice" />
+    <mapping class="com.dmt.modal.InvoiceAccount" />
+    </session-factory>
+</hibernate-configuration>
